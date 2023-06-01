@@ -1,34 +1,33 @@
 #include "binary_trees.h"
 
 /**
- * binary_tree_rotate_right - Right-rotates a binary tree.
- * @tree: A pointer to the root node of the tree to rotate.
+ * binary_tree_rotate_right - performs a right-rotation on a binary tree
  *
- * Return: A pointer to the new root node after rotation.
+ * @tree: tree root
+ * Return: pointer to the new root
  */
 binary_tree_t *binary_tree_rotate_right(binary_tree_t *tree)
 {
-	binary_tree_t *pivot, *tmp;
+	binary_tree_t *new_root;
 
 	if (tree == NULL || tree->left == NULL)
-		return (NULL);
+		return (tree);
 
-	pivot = tree->left;
-	tmp = pivot->right;
-	pivot->right = tree;
-	tree->left = tmp;
-	if (tmp != NULL)
-		tmp->parent = tree;
-	tmp = tree->parent;
-	tree->parent = pivot;
-	pivot->parent = tmp;
-	if (tmp != NULL)
+	new_root = tree->left;
+
+	if (new_root->right)
 	{
-		if (tmp->left == tree)
-			tmp->left = pivot;
-		else
-			tmp->right = pivot;
+		tree->left = new_root->right;
+		new_root->right->parent = tree;
+	}
+	else
+	{
+		tree->left = NULL;
 	}
 
-	return (pivot);
+	new_root->right = tree;
+	new_root->parent = tree->parent;
+	tree->parent = new_root;
+
+	return (new_root);
 }
